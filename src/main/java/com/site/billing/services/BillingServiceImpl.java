@@ -1,6 +1,8 @@
 package com.site.billing.services;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 
@@ -12,8 +14,7 @@ import com.site.billing.repository.BillingRepository;
 @Service
 public class BillingServiceImpl implements BillingService {
 	BillingRepository billingRepo;
-	SimpleDateFormat dtf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
-	String dateString = dtf.format(new Date());
+	
 	
 	BillingEntity bill = null;
 
@@ -24,6 +25,9 @@ public class BillingServiceImpl implements BillingService {
 	@Override
 	public BillingEntity saveAndPrintBill(BillingEntity billingEntity) {
 		try {
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss");
+			LocalDateTime now = LocalDateTime.now();  
+			String dateString = dtf.format(now);
 			billingEntity.setAmount((String.format("%.2f",billingEntity.getPrice() * billingEntity.getQuantity())).toString());
 			billingEntity.setDate(dateString);
 			bill = billingRepo.save(billingEntity);

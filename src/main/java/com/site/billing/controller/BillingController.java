@@ -2,6 +2,7 @@ package com.site.billing.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,11 +25,13 @@ public class BillingController {
 	}
 
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping
 	private ResponseEntity<BillingEntity> saveBill(@RequestBody BillingEntity billing) {
 		try {
 			bill = billingService.saveAndPrintBill(billing);
 			if (bill.getId()!=null) {
+				System.out.println(bill.toString());
 				return new ResponseEntity<>(bill, HttpStatus.ACCEPTED);
 			}
 		} catch (Exception e) {
